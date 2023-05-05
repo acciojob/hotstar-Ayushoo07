@@ -28,13 +28,13 @@ public class SubscriptionService {
         subscription.setSubscriptionType(subscriptionEntryDto.getSubscriptionType());
         subscription.setNoOfScreensSubscribed(subscriptionEntryDto.getNoOfScreensRequired());
         User user = userRepository.findById(subscriptionEntryDto.getUserId()).get();
-        subscription.setUser(user);
 
-        if(subscription.getSubscriptionType().equals("BASIC"))
+
+        if(subscription.getSubscriptionType().equals(SubscriptionType.BASIC))
         {
             subscription.setTotalAmountPaid(500+200*subscription.getNoOfScreensSubscribed());
         }
-        else if(subscription.getSubscriptionType().equals("PRO"))
+        else if(subscription.getSubscriptionType().equals(SubscriptionType.PRO))
         {
             subscription.setTotalAmountPaid(800+250*subscription.getNoOfScreensSubscribed());
         }
@@ -43,6 +43,7 @@ public class SubscriptionService {
             subscription.setTotalAmountPaid(1000+350*subscription.getNoOfScreensSubscribed());
         }
         //Save The subscription Object into the Db and return the total Amount that user has to pay
+        subscription.setUser(user);
         user.setSubscription(subscription);
         userRepository.save(user);
         return subscription.getTotalAmountPaid();
